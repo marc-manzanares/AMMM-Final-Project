@@ -8,37 +8,58 @@ main {
   	var start = new Date();
   	var startTime = start.getTime();
 	
-	    
+	// Set a file for output
+  	var out = new IloOplOutputFile("solutions.txt");
+      
 	var src = new IloOplModelSource("project.template2.mod"); // load model
 	var def = new IloOplModelDefinition(src);
 	var cplex = new IloCplex();
-	var model = new IloOplModel(def, cplex);
-	var data = new IloOplDataSource("project.1.dat"); // load instance
-	model.addDataSource(data);
-	model.generate();
 	
-	cplex.tilim=1800; // 30 mins
-	cplex.epgap = 0.01; // GAP 1%
+	// load data files
+	var data_files = new Array();
+	data_files[0] = "project.1.dat";
+	data_files[1] = "project.2.dat";
+	data_files[2] = "project.3.dat";
+	data_files[3] = "project.4.dat";
+	data_files[4] = "project.5.dat";
+	data_files[5] = "project.6.dat";
+	data_files[6] = "project.7.dat";
+	data_files[7] = "project.8.dat";
+	data_files[8] = "project.9.dat";
 	
-	if (cplex.solve()) {
-		writeln ( "OBJECTIVE: " + cplex.getObjValue() );
-		var prev = 0;
-		for (var i = 1; i <= model.n-1; i++) {
+	for (var i = 0; i <= 8; i++) {
+	  	out.writeln("Solution #" + (i+1));
+	  
+	  	var model = new IloOplModel(def, cplex);
+	  	var data = new IloOplDataSource(data_files[i]);
+
+      	model.addDataSource(data);
+      	model.generate();
+    	
+    	cplex.tilim=1800; // 30 mins
+		cplex.epgap = 0.01; // GAP 1%
+    	
+    	if (cplex.solve()) {
+			out.writeln ( "OBJECTIVE: " + cplex.getObjValue() );
+			var prev = 0;
 			for (var j = 1; j <= model.n-1; j++) {
-			  if (model.kjth_code[i][j] == 1) {
-			    writeln(prev + " --> " + j);
-			    prev = j;    
-			  }
+				for (var k = 1; k <= model.n-1; k++) {
+				  if (model.kjth_code[j][k] == 1) {
+				    out.writeln(prev + " --> " + k);
+				    prev = k;    
+				  }
+				}
 			}
+			out.writeln(prev + " --> " + 0);
 		}
-		writeln(prev + " --> " + 0);
-	}
-	else {
-		writeln("No solution found");
+		else {
+			out.writeln("No solution found");
+		}
+		model.end();
+		data.end();
 	}
 	
-	model.end();
-	data.end();
+	
 	def.end();
 	cplex.end();
 	src.end();
