@@ -1,7 +1,7 @@
 # --- Common specific parameters ------------------------------------------------------------------------------
-inputDataFile        = data/instance_4.dat;         # Input DAT file
-solutionFile         = solutions/a.sol;             # Output DAT file (solution)
-solver               = GRASP;                       # Supported solvers: Greedy / Random / GRASP / BRKGA
+inputDataFile        = data/instance_0.dat;         # Input DAT file
+solutionFile         = solutions/solution.sol;      # Output DAT file (solution)
+solver               = Greedy;                      # Supported solvers: Greedy / Random / GRASP / BRKGA
 maxExecTime          = 600;                         # Maximum execution time in seconds
 verbose              = True;                        # Verbose mode?
 
