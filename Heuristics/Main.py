@@ -12,7 +12,6 @@ from Heuristics.solvers.solver_GRASP import Solver_GRASP
 from Heuristics.problem.instance import Instance
 
 
-
 class Main:
     def __init__(self, config):
         self.config = config
@@ -31,7 +30,7 @@ class Main:
                 else:
                     raise AMMMException('Solver %s not supported.' % str(self.config.solver))
                 solution = solver.solve(solution=initialSolution)
-                print('Solution: %s' % 'numFlips')  # Change this when problem.solution is implemented
+                print('Solution: %s' % 'numFlips')  # Change numFlips when problem.solution is implemented
                 solution.saveToFile(self.config.solutionFile)
             else:
                 print('Instance is infeasible.')
