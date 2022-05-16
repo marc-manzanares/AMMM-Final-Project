@@ -1,4 +1,5 @@
-import random, time
+import random
+import time
 from Heuristics.solver import _Solver
 from Heuristics.solvers.localSearch import LocalSearch
 

@@ -1,5 +1,5 @@
 # --- Common specific parameters ------------------------------------------------------------------------------
-inputDataFile        = data/instance_0.dat;         # Input DAT file
+inputDataFile        = data/project.2.dat;         # Input DAT file
 solutionFile         = solutions/solution.sol;      # Output DAT file (solution)
 solver               = Greedy;                      # Supported solvers: Greedy / Random / GRASP / BRKGA
 maxExecTime          = 600;                         # Maximum execution time in seconds

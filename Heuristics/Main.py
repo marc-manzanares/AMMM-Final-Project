@@ -21,6 +21,8 @@ class Main:
             if self.config.verbose: print('Creating Problem Instance...')
             instance = Instance(self.config, data)
             if self.config.verbose: print('Solving the Problem...')
+
+            # check Instance's implementation stopped until solvers are finished
             if instance.checkInstance():
                 initialSolution = None
                 if self.config.solver == 'Greedy':
