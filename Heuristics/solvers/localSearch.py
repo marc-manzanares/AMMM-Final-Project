@@ -19,6 +19,7 @@ class LocalSearch(_Solver):
 
         # Lin-Kernighan heuristic implementation
         # Exchange non successive edges, if d(a,b) + d(c,d) > d(a,d) + d(b,c)
+        return 1
 
 
     def exploreNeighborhood(self, solution):
