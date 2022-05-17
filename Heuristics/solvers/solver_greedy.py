@@ -27,7 +27,7 @@ class Solver_Greedy(_Solver):
                     lines[i] = 99
                 if (lines[i] == min(lines)):
                     ##tocaria mirar si es feasible la solució no?, podem reaprofitar encara més codi?
-                    candidat = solution.findFeasivleAssignments(self.getNode(lines[i]))
+                    candidat = solution.findFeasivleAssignments(self.instance.getNode(lines[i]))
 
                     if not candidat:
                         solution.makeInfeasible()
@@ -36,7 +36,7 @@ class Solver_Greedy(_Solver):
                     # select assignment
                     candidate = self._selectCandidate(candidat)
                     # assign the current task to the CPU that resulted in a minimum highest load
-                    solution.assign(self.getNode(lines[i]))
+                    solution.assign(self.instance.getNode(lines[i]))
 
             
          
