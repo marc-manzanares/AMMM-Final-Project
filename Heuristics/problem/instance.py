@@ -44,6 +44,7 @@ class Instance(object):
     def createSolution(self):
         solution = Solution(self.sequence, self.distances)
         solution.setVerbose(self.config.verbose)
+        solution.add_starter_node(self.getNode(0))
         return solution
 
     def checkInstance(self):
