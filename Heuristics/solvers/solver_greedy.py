@@ -19,23 +19,26 @@ class Solver_Greedy(_Solver):
         #aixo ens hauria de trnar els codis amb ordre invers de feina a realitzar entre codi
         codes = self.instance.getDistances()
         #aquesta part mereix més estudi
-        sortedCodes= sorted(codes, key=lambda t: t.getChanges(), reverse=True)
+         
+        #hem faltaria dafirmar k no hauria de ser 0, pero aixo auria de servir crec
+        for lines in codes:
+            for i in range(0,  lines.size):
+                if lines[i] ==0:
+                    lines[i] = 99
+                if (lines[i] == min(lines)):
+                    ##tocaria mirar si es feasible la solució no?, podem reaprofitar encara més codi?
+                    candidat = solution.findFeasivleAssignments(self.getNode(lines[i]))
 
-        for code in sortedCodes:
-            codeID = code.getId()
+                    if not candidat:
+                        solution.makeInfeasible()
+                        break
 
-            ##tocaria mirar si es feasible la solució no?, podem reaprofitar encara més codi?
-            candidat = solution.findFeasivleAssignments(codeID)
+                    # select assignment
+                    candidate = self._selectCandidate(candidat)
+                    # assign the current task to the CPU that resulted in a minimum highest load
+                    solution.assign(self.getNode(lines[i]))
 
-            if not candidat:
-                solution.makeInfeasible()
-                break
-
-            # select assignment
-            candidate = self._selectCandidate(candidat)
-
-            # assign the current task to the CPU that resulted in a minimum highest load
-            solution.assign(codeID)
+            
          
         return solution
 
