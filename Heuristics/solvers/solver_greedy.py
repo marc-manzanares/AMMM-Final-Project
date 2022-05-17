@@ -8,8 +8,11 @@ from Heuristics.solvers.localSearch import LocalSearch
 class Solver_Greedy(_Solver):
     
     def _selectCandidate(self, candidateList):
-        sortedList = sorted(candidateList, key=lambda x: x.highests_changes)
-        return sortedList[0]
+        act_min =max(candidateList)
+        for i in range(len(candidateList)):
+            if candidateList[i]!= 0:
+                act_min=min(act_min,candidateList[i])
+        return act_min
 
 
 
@@ -21,24 +24,11 @@ class Solver_Greedy(_Solver):
         #aquesta part mereix més estudi
          
         #hem faltaria dafirmar k no hauria de ser 0, pero aixo auria de servir crec
-        for lines in codes:
-            for i in range(0,  lines.size):
-                if lines[i] ==0:
-                    lines[i] = 99
-                if (lines[i] == min(lines)):
-                    ##tocaria mirar si es feasible la solució no?, podem reaprofitar encara més codi?
-                    candidat = solution.findFeasivleAssignments(self.instance.getNode(lines[i]))
-
-                    if not candidat:
-                        solution.makeInfeasible()
-                        break
-
-                    # select assignment
-                    candidate = self._selectCandidate(candidat)
-                    # assign the current task to the CPU that resulted in a minimum highest load
-                    solution.assign(self.instance.getNode(lines[i]))
-
-            
+        node_actual=0
+        for i in range(0, self.instance.getnumCodes()):
+            node_actual = self._selectCandidate(node_actual)
+            # assign the current task to the CPU that resulted in a minimum highest load
+            solution.add_node(self.instance.getNode(node_actual))
          
         return solution
 
