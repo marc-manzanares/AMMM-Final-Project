@@ -17,7 +17,8 @@ class Solver_Greedy(_Solver):
         solution = self.instance.createSolution()
 
         #aixo ens hauria de trnar els codis amb ordre invers de feina a realitzar entre codi
-        codes = self.instance.getCodes()
+        codes = self.instance.getDistances()
+        #aquesta part mereix més estudi
         sortedCodes= sorted(codes, key=lambda t: t.getChanges(), reverse=True)
 
         for code in sortedCodes:
@@ -38,6 +39,7 @@ class Solver_Greedy(_Solver):
          
         return solution
 
+        
     def solve(self, **kwargs):
         self.startTimeMeasure()
 
@@ -50,7 +52,7 @@ class Solver_Greedy(_Solver):
 
         self.writeLogLine(float('inf'), 0)
 
-        solution = 1 # self.construct()
+        solution = self.construct()
         if self.config.localSearch:
             localSearch = LocalSearch(self.config, None)
             endTime= self.startTime + self.config.maxExecTime
