@@ -4,7 +4,6 @@ from Heuristics.solver import _Solver
 from AMMMGlobals import AMMMException
 
 
-# Implementation of a local search using two neighborhoods and two different policies.
 class LocalSearch(_Solver):
     def __init__(self, config, instance):
         self.enabled = config.localSearch
@@ -13,12 +12,28 @@ class LocalSearch(_Solver):
         self.maxExecTime = config.maxExecTime
         super().__init__(config, instance)
 
+
+    def evaluateNewPair(self, p11, p12, p21, p22):
+        # Return if the new pair has lower distance value than the old one (greedy)
+        d = self.instance.getDistances()
+        d_old_1 = d[p11][p12]
+        d_old_2 = d[p21][p22]
+        d_new_1 = d[p11][p22]
+        d_new_2 = d[p12][p21]
+
+        if d_old_1 + d_old_2 > d_new_1 + d_new_2:
+            return True
+        return False
+
+
     def exploreExchange(self, solution):
         curHighestLoad = solution.getFitness()
         bestNeighbor = solution
 
         # Lin-Kernighan heuristic implementation
         # Exchange non successive edges, if d(a,b) + d(c,d) > d(a,d) + d(b,c)
+
+
         return bestNeighbor
 
 

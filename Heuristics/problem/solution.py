@@ -14,14 +14,15 @@ class Solution(_Solution):
         super().__init__()
 
     #afegim un node visitat a les llistes
-    def add_node(self,node):
-        if node  not in self.used_code:
+    def add_node(self, node):
+        if node not in self.used_code:
             self.used_code.append(node)
             self.actual_sequence.append(node)
             return True
         else: return False
 
-
     def add_starter_node(self,node):
         self.actual_sequence.append(node)
         return True
+
+
