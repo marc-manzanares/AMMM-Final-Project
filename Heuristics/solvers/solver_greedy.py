@@ -5,7 +5,7 @@ from Heuristics.solvers.localSearch import LocalSearch
 
 
 
-class Solver_Greedy(object):
+class Solver_Greedy(_Solver):
     
     def _selectCandidate(self, candidateList):
         sortedList = sorted(candidateList, key=lambda x: x.highests_changes)
@@ -38,4 +38,27 @@ class Solver_Greedy(object):
          
         return solution
 
-        
+    def solve(self, **kwargs):
+        self.startTimeMeasure()
+
+        solver = kwargs.get('solver', None)
+        if solver is not None:
+            self.config.solver = solver
+        localSearch = kwargs.get('localSearch', None)
+        if localSearch is not None:
+            self.config.localSearch = localSearch
+
+        self.writeLogLine(float('inf'), 0)
+
+        solution = 1 # self.construct()
+        if self.config.localSearch:
+            localSearch = LocalSearch(self.config, None)
+            endTime= self.startTime + self.config.maxExecTime
+            solution = localSearch.solve(solution=solution, startTime=self.startTime, endTime=endTime)
+
+        self.elapsedEvalTime = time.time() - self.startTime
+        self.writeLogLine(solution.getFitness(), 1)
+        self.numSolutionsConstructed = 1
+        self.printPerformance()
+
+        return solution

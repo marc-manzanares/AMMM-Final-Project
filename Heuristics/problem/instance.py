@@ -22,7 +22,7 @@ class Instance(object):
                 self.distances[i][j] = num_flips
 
     def getSizeCode(self):
-        # Returns length of each code (m paremeter)
+        # Returns length of each code (m parameter)
         return self.sizeCode
 
     def getnumCodes(self):
