@@ -31,7 +31,8 @@ class Main:
                 else:
                     raise AMMMException('Solver %s not supported.' % str(self.config.solver))
                 solution = solver.solve(solution=initialSolution)
-                print('Solution: %s' % 'numFlips')  # Change numFlips when problem.solution is implemented
+                print('Solution: %s' % str(solution.sum_of_codes))
+                # print('Solution node PATH: %s' % str(solution.actual_sequence))
                 solution.saveToFile(self.config.solutionFile)
             else:
                 print('Instance is infeasible.')

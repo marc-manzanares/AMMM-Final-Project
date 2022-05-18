@@ -8,27 +8,41 @@ from Heuristics.solvers.localSearch import LocalSearch
 class Solver_Greedy(_Solver):
     
     def _selectCandidate(self, candidateList):
-        act_min =max(candidateList)
-        for i in range(len(candidateList)):
-            if candidateList[i]!= 0:
-                act_min=min(act_min,candidateList[i])
-        return act_min
+        act_min = max(candidateList)[0]
+        index = max(candidateList)[1]
+        for code in candidateList:
+            if code[0] != 0:
+                if act_min != min(act_min, code[0]):
+                    act_min = min(act_min, code[0])
+                    index = code[1]
+        candidate = (act_min, index)
+        return candidate
 
 
 
     def construct(self):
         solution = self.instance.createSolution()
-
-        #aixo ens hauria de trnar els codis amb ordre invers de feina a realitzar entre codi
         codes = self.instance.getDistances()
-        #aquesta part mereix més estudi
-         
-        #hem faltaria dafirmar k no hauria de ser 0, pero aixo auria de servir crec
-        node_actual=0
+
         for i in range(0, self.instance.getnumCodes()):
-            node_actual = self._selectCandidate(node_actual)
-            # assign the current task to the CPU that resulted in a minimum highest load
-            solution.add_node(self.instance.getNode(node_actual))
+            if i == self.instance.getnumCodes()-1:
+                solution.sum_of_codes.append(codes[solution.actual_id_sequence[-1]][0])
+                solution.actual_sequence[i+1] = []
+                solution.actual_sequence[i+1].append(self.instance.getNode(0))
+                solution.actual_id_sequence.append(0)
+                continue
+            if i == 0:
+                candidate_list = solution.findFeasibleAssignment(0)
+            else:
+                candidate_list = solution.findFeasibleAssignment(solution.actual_id_sequence[-1])
+
+            if not candidate_list:
+                solution.makeInfeasible()
+                break
+
+            candidate = self._selectCandidate(candidate_list)
+
+            solution.add_node(candidate[0], candidate[1])
          
         return solution
 

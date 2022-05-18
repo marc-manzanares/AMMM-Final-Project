@@ -29,12 +29,13 @@ class LocalSearch(_Solver):
     def exploreExchange(self, solution):
         curHighestLoad = solution.getFitness()
         bestNeighbor = solution
+        nodes = solution.used_code # solution without first node
+        sequence = solution.actual_sequence
 
         # Lin-Kernighan heuristic implementation
         # Exchange non successive edges, if d(a,b) + d(c,d) > d(a,d) + d(b,c)
-
-
-        return bestNeighbor
+        for i in range(0, sequence-1):
+            return bestNeighbor
 
 
     def exploreNeighborhood(self, solution):
