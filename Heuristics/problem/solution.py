@@ -42,6 +42,16 @@ class Solution(_Solution):
             return True
         return False
 
+    def remove_node(self, dist, node_id):
+        if node_id in self.used_code and dist != 0:
+            self.used_code.pop(node_id)
+            self.actual_sequence.pop(node_id)
+            self.actual_id_sequence.remove(node_id)
+            self.sum_of_codes.remove(dist)
+            self.total_sum -= dist
+            return True
+        return False
+
     def add_starter_node(self, node):
         self.actual_sequence[0] = []
         self.actual_sequence[0].append(node)
