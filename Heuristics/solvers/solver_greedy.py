@@ -27,6 +27,7 @@ class Solver_Greedy(_Solver):
         for i in range(0, self.instance.getnumCodes()):
             if i == self.instance.getnumCodes()-1:
                 solution.sum_of_codes.append(codes[solution.actual_id_sequence[-1]][0])
+                solution.total_sum += codes[solution.actual_id_sequence[-1]][0]
                 solution.actual_sequence[i+1] = []
                 solution.actual_sequence[i+1].append(self.instance.getNode(0))
                 solution.actual_id_sequence.append(0)
@@ -66,7 +67,7 @@ class Solver_Greedy(_Solver):
             solution = localSearch.solve(solution=solution, startTime=self.startTime, endTime=endTime)
 
         self.elapsedEvalTime = time.time() - self.startTime
-        self.writeLogLine(solution.getFitness(), 1)
+        self.writeLogLine(solution.total_sum, 1)
         self.numSolutionsConstructed = 1
         self.printPerformance()
 

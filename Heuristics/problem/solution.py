@@ -15,6 +15,7 @@ class Solution(_Solution):
         self.actual_id_sequence = []
         # list with the distances of the greedy solution
         self.sum_of_codes = []
+        self.total_sum = 0
         super().__init__()
 
 
@@ -37,6 +38,7 @@ class Solution(_Solution):
             self.actual_sequence[node_id].append(self.sequence[node_id])
             self.actual_id_sequence.append(node_id)
             self.sum_of_codes.append(dist)
+            self.total_sum += dist
             return True
         return False
 
@@ -48,10 +50,7 @@ class Solution(_Solution):
 
     def saveToFile(self, filePath):
         f = open(filePath, 'w')
-        num_flips = 0
-        for dist in self.sum_of_codes:
-            num_flips += dist
-        f.write('OBJECTIVE: ' + str(num_flips) + '\n')
+        f.write('OBJECTIVE: ' + str(self.total_sum) + '\n')
         for i, node in enumerate(self.actual_id_sequence):
             if i == 0:
                 continue

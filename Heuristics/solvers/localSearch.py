@@ -27,7 +27,7 @@ class LocalSearch(_Solver):
 
 
     def exploreExchange(self, solution):
-        curHighestLoad = solution.getFitness()
+        curHighestFlips = solution.total_sum
         bestNeighbor = solution
         nodes = solution.used_code # solution without first node
         sequence = solution.actual_sequence
