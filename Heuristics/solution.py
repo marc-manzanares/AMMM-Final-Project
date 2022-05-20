@@ -5,7 +5,7 @@ from AMMMGlobals import AMMMException
 # checks and to dump the solution into a string or file.
 class _Solution(object):
     def __init__(self):
-        self.fitness = 0.0
+        self.fitness = 0
         self.feasible = True
         self.verbose = False
 

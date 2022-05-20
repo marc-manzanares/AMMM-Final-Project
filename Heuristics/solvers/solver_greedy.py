@@ -28,9 +28,6 @@ class Solver_Greedy(_Solver):
             if i == self.instance.getnumCodes()-1:
                 solution.sum_of_codes.append(codes[solution.actual_id_sequence[-1]][0])
                 solution.total_sum += codes[solution.actual_id_sequence[-1]][0]
-                # Commented because last node = first node
-                # solution.actual_sequence[i+1] = []
-                # solution.actual_sequence[i+1].append(self.instance.getNode(0))
                 solution.actual_id_sequence.append(0)
                 continue
             if i == 0:

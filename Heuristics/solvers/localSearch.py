@@ -17,7 +17,7 @@ class LocalSearch(_Solver):
         # Update solution.total_sum (remove old distances, add new distances)
         # Exchange nodes on solution.actual_sequence and actual_id_sequence
 
-        # Update total_sum
+        # Update total_sum (uncomment to see other solutions)
         # for dist in old_dists:
         #     solution.total_sum -= dist
         # for dist in new_dists:
@@ -137,10 +137,8 @@ class LocalSearch(_Solver):
             neighbor = self.exploreNeighborhood(incumbent)
             if neighbor is None: break
             neighborFlips = neighbor.total_sum
-            self.writeLogLine(neighborFlips, iterations)
             if incumbentFlips <= neighborFlips:
-                if iterations == 5:
-                    break
+                break
             incumbent = neighbor
             incumbentFlips = neighborFlips
 

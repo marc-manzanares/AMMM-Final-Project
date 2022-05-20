@@ -5,7 +5,7 @@ class Solution(_Solution):
     def __init__(self, sequence, distances):
         self.sequence = sequence
         self.distances = distances
-        self.fitness = 0.0
+        self.fitness = 0
         self.feasible = True
         #es defineix com la llista dels nodes(codis) qu el nostre TSP(que es el que es a la practica) ha visitat size = k-1
         #en aquest no posem el primer 0

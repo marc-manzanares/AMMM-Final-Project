@@ -10,25 +10,27 @@ class Solver_GRASP(_Solver):
     def _selectCandidate(self, candidateList, alpha):
 
         # sort candidate assignments by highestLoad in ascending order
-        act_min = max(candidateList)[0]
-        act_max = min(candidateList)[0]
-        index = max(candidateList)[1]
+        sortedCandidateList = sorted(candidateList)
 
-        # compute boundary highest load as a function of the minimum and maximum highest loads and the alpha parameter
-        """
-        minHLoad = sortedCandidateList[0].highestLoad
-        maxHLoad = sortedCandidateList[-1].highestLoad
-        """
-        boundaryHLoad = act_max + (act_min - act_max) * alpha
+        act_min = min(sortedCandidateList)[0]
+        act_max = max(sortedCandidateList)[0]
+        index = max(sortedCandidateList)[1]
+
+        # # compute boundary highest load as a function of the minimum and maximum highest loads and the alpha parameter
+        # """
+        # minHLoad = sortedCandidateList[0].highestLoad
+        # maxHLoad = sortedCandidateList[-1].highestLoad
+        # """
+        boundaryHLoad = act_min + alpha * (act_max - act_min)
 
         # find elements that fall into the RCL
         maxIndex = 0
-        for candidate in candidateList:
+        for candidate in sortedCandidateList:
             if candidate[0] <= boundaryHLoad:
                 maxIndex += 1
 
         # create RCL and pick an element randomly
-        rcl = candidateList[0:maxIndex]  # pick first maxIndex elements starting from element 0
+        rcl = sortedCandidateList[0:maxIndex]  # pick first maxIndex elements starting from element 0
         if not rcl: return None
         return random.choice(rcl)  # pick a candidate from rcl at random
 
@@ -44,8 +46,6 @@ class Solver_GRASP(_Solver):
             if i == self.instance.getnumCodes() - 1:
                 solution.sum_of_codes.append(codes[solution.actual_id_sequence[-1]][0])
                 solution.total_sum += codes[solution.actual_id_sequence[-1]][0]
-                solution.actual_sequence[i + 1] = []
-                solution.actual_sequence[i + 1].append(self.instance.getNode(0))
                 solution.actual_id_sequence.append(0)
                 continue
             if i == 0:
@@ -90,7 +90,7 @@ class Solver_GRASP(_Solver):
                 solution = localSearch.solve(solution=solution, startTime=self.startTime, endTime=endTime)
 
             if solution.isFeasible():
-                solutionHighestLoad = solution.getFitness()
+                solutionHighestLoad = solution.total_sum
                 if solutionHighestLoad < bestHighestLoad:
                     incumbent = solution
                     bestHighestLoad = solutionHighestLoad
