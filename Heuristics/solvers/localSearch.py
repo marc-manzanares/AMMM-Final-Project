@@ -13,67 +13,105 @@ class LocalSearch(_Solver):
         super().__init__(config, instance)
 
 
-    def createNeighborSolution(self, solution, new_):
+    def exchangePair(self, old_dists, new_dists, nodes_id, solution):
+        # Update solution.total_sum (remove old distances, add new distances)
+        # Exchange nodes on solution.actual_sequence and actual_id_sequence
 
-        newSolution = copy.deepcopy(solution)
+        # Update total_sum
+        # for dist in old_dists:
+        #     solution.total_sum -= dist
+        # for dist in new_dists:
+        #     solution.total_sum += dist
 
-        for move in moves:
-            newSolution.remove_node(move.taskId, move.curCPUId)
+        # Update actual_id_sequence (a list with the new solution path)
+        new_sequence = {}
+        new_id_sequence = []
+        reverse = False
+        i = 0
+        while not reverse:
+            # Add nodes while not having to change the first node
+            new_id_sequence.append(solution.actual_id_sequence[i])
+            new_sequence[solution.actual_id_sequence[i]] = []
+            new_sequence[solution.actual_id_sequence[i]].append(solution.sequence[solution.actual_id_sequence[i]])
+            if solution.actual_id_sequence[i] == nodes_id[0]:
+                new_id_sequence.append(nodes_id[2])
+                new_sequence[nodes_id[2]] = []
+                new_sequence[nodes_id[2]].append(solution.sequence[nodes_id[2]])
+                reverse = True
+            i += 1
+        i = solution.actual_id_sequence.index(nodes_id[2])-1
+        while reverse:
+            new_id_sequence.append(solution.actual_id_sequence[i])
+            new_sequence[solution.actual_id_sequence[i]] = []
+            new_sequence[solution.actual_id_sequence[i]].append(solution.sequence[solution.actual_id_sequence[i]])
+            if solution.actual_id_sequence[i] == nodes_id[1]:
+                new_id_sequence.append(nodes_id[3])
+                new_sequence[nodes_id[3]] = []
+                new_sequence[nodes_id[3]].append(solution.sequence[nodes_id[3]])
+                reverse = False
+            i -= 1
+        for i in range(solution.actual_id_sequence.index(nodes_id[3])+1, len(solution.actual_id_sequence)):
+            new_id_sequence.append(solution.actual_id_sequence[i])
+            new_sequence[solution.actual_id_sequence[i]] = []
+            new_sequence[solution.actual_id_sequence[i]].append(solution.sequence[solution.actual_id_sequence[i]])
 
-        for move in moves:
-            feasible = newSolution.assign(move.taskId, move.newCPUId)
-            if not feasible: return None
+        # Update total_sum
+        new_total_sum = 0
+        for i in range(0, len(new_id_sequence)-1):
+            if i == len(new_id_sequence)-2:
+                new_total_sum += solution.distances[new_id_sequence[i]][0]
+            else:
+                new_total_sum += solution.distances[new_id_sequence[i]][new_id_sequence[i+1]]
 
-        return newSolution
+        solution.actual_id_sequence = new_id_sequence
+        solution.actual_sequence = new_sequence
+        solution.total_sum = new_total_sum
+
+        return solution
+
 
     def evaluateNewPair(self, p11, p12, p21, p22, solution):
         # Return if the new pair has lower distance value than the old one (greedy)
         newSolution = copy.deepcopy(solution)
         new_dists = []
-        new_nodes = []
+        old_dists = []
+        nodes_id = []
         d = solution.distances
-        new_dists.append(d[solution.actual_id_sequence[p11]][solution.actual_id_sequence[p12]])
-        new_dists.append(d[solution.actual_id_sequence[p21]][solution.actual_id_sequence[p22]])
+        old_dists.append(d[solution.actual_id_sequence[p11]][solution.actual_id_sequence[p12]])
+        old_dists.append(d[solution.actual_id_sequence[p21]][solution.actual_id_sequence[p22]])
         new_dists.append(d[solution.actual_id_sequence[p11]][solution.actual_id_sequence[p22]])
         new_dists.append(d[solution.actual_id_sequence[p12]][solution.actual_id_sequence[p21]])
 
-        new_nodes.append(p11)
-        new_nodes.append(p12)
-        new_nodes.append(p21)
-        new_nodes.append(p22)
+        nodes_id.append(solution.actual_id_sequence[p11])
+        nodes_id.append(solution.actual_id_sequence[p12])
+        nodes_id.append(solution.actual_id_sequence[p21])
+        nodes_id.append(solution.actual_id_sequence[p22])
 
-        if new_dists[0] + new_dists[1] > new_dists[2] + new_dists[3]:
-            for i in range(0, 3):
-                newSolution.remove_node(new_dists[i], new_nodes[i])
-            for i in range(0, 3):
-                newSolution.add_node(new_dists[i], new_nodes[i])
-        return newSolution
+        if old_dists[0] + old_dists[1] > new_dists[0] + new_dists[1]:
+            # exchange pairs
+            return self.exchangePair(old_dists, new_dists, nodes_id, newSolution)
+        return solution
 
 
     def exploreExchange(self, solution):
         curHighestFlips = solution.total_sum
         bestNeighbor = solution
-        nodes = solution.used_code # solution without first node
         greedy_total_path = solution.actual_sequence
-        greedy_sum_path = solution.sum_of_codes
 
         # Lin-Kernighan heuristic implementation
         # Exchange non successive edges, if d(a,b) + d(c,d) > d(a,d) + d(b,c)
 
-        # We start from node[1] and end on node[n-1] because we can't modify positions of 00..00 codes
-        for i in range(1, len(greedy_total_path)):
-            for j in range(i+2, len(greedy_total_path)-1):
+        for i in range(0, len(greedy_total_path)):
+            # We probably have to change it to i+3 (non successive edge)
+            for j in range(i+3, len(greedy_total_path)-1):
                 neighborHighestFlips = self.evaluateNewPair(i, i+1, j, j+1, solution)
                 if neighborHighestFlips.total_sum <= curHighestFlips:
-                    # neighbor = self.createNeighborSolution(solution, i, i+1, j, j+1)
-                    # if neighbor is None:
-                    #     raise AMMMException('[exploreExchange] No neighbouring solution could be created')
                     if self.policy == 'FirstImprovement': return neighborHighestFlips
                     else:
                         bestNeighbor = neighborHighestFlips
                         curHighestFlips = neighborHighestFlips.total_sum
 
-            return bestNeighbor
+        return bestNeighbor
 
 
     def exploreNeighborhood(self, solution):
@@ -99,7 +137,10 @@ class LocalSearch(_Solver):
             neighbor = self.exploreNeighborhood(incumbent)
             if neighbor is None: break
             neighborFlips = neighbor.total_sum
-            if incumbentFlips <= neighborFlips: break
+            self.writeLogLine(neighborFlips, iterations)
+            if incumbentFlips <= neighborFlips:
+                if iterations == 5:
+                    break
             incumbent = neighbor
             incumbentFlips = neighborFlips
 
