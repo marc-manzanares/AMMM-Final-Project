@@ -76,6 +76,7 @@ class Solver_GRASP(_Solver):
         self.writeLogLine(bestHighestLoad, 0)
 
         iteration = 0
+        print(iteration)
         while not self.stopCriteria():
             iteration += 1
 
