@@ -1,7 +1,7 @@
 instancesDirectory = output;
-fileNamePrefix = big;
+fileNamePrefix = 25_30_instance;
 fileNameExtension = dat;
-numInstances = 3;
+numInstances = 1;
 
-sizeCode = 40;
-numCodes = 50;
+sizeCode = 25;
+numCodes = 30;
