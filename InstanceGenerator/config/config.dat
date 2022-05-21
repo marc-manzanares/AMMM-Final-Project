@@ -1,7 +1,7 @@
 instancesDirectory = output;
-fileNamePrefix = 25_30_instance;
+fileNamePrefix = grasp_tunning_instance;
 fileNameExtension = dat;
-numInstances = 1;
+numInstances = 3;
 
-sizeCode = 25;
-numCodes = 30;
+sizeCode = 20;
+numCodes = 25;

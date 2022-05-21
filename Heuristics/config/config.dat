@@ -1,13 +1,13 @@
 # --- Common specific parameters ------------------------------------------------------------------------------
-inputDataFile        = data/big_0.dat;         # Input DAT file
-solutionFile         = solutions/grasp_LS_big_0.sol;      # Output DAT file (solution)
+inputDataFile        = data/grasp_tunning_instance_0.dat;         # Input DAT file
+solutionFile         = solutions/grasp_tunning_0_00.sol;      # Output DAT file (solution)
 solver               = GRASP;                      # Supported solvers: Greedy / Random / GRASP / BRKGA
-maxExecTime          = 1800;                         # Maximum execution time in seconds
+maxExecTime          = 600;                         # Maximum execution time in seconds
 verbose              = True;                        # Verbose mode?
 
 # --- GRASP constructive specific parameters ------------------------------------------------------------------
 # Ignored if solver is not GRASP.
-alpha                = 0.1;                         # Alpha parameter for the GRASP solver.
+alpha                = 0.0;                         # Alpha parameter for the GRASP solver.
 
 # --- Local Search specific parameters ------------------------------------------------------------------------
 localSearch          = False;                       # Enable local search?
