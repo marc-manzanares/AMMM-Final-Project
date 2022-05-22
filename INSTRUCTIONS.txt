@@ -1,0 +1,33 @@
+############ INSTRUCTIONS TO RUN THE OPL CODE IN CPLEX #############
+
+
+
+
+
+################ INSTRUCTIONS TO RUN THE HEURISTICS ################
+On the Heuristics folder you will find two folders: Heuristics and InstanceGenerator.
+
+- Heuristics contains the code to run the heuristic solvers: Greedy, local search and GRASP.
+- InstanceGenerator contains the code to generate the instances.
+
+
+### HOW TO GENERATE INSTANCES ###
+
+To generate new instances, go to /InstanceGenerator/config/ and open the config.dat file. Inside this file,
+you can modify the parameters as you want.
+
+Once you are done with config.dat file, just run the /InstanceGenerator/Main.py file to generate the instances.
+You will find the instances inside InstanceGenerator/output folder.
+
+
+### HOW TO RUN THE HEURISTIC SOLVERS WITH THE NEW GENERATED INSTANCES ###
+
+First, copy the previously generated instances to the /Heuristics/data/ folder.
+
+Then open the /Heuristics/config/config.dat file, and modify the parameters as you want. The structure
+is the same as the one from the lab sessions, so you shouldn't have any problem.
+
+Once you have selected the solver you want to use, run the /Heuristics/Main.py file and wait until it ends.
+
+The solution file will be inside the /Heuristics/solutions/ folder.
+
