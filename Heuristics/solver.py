@@ -7,7 +7,7 @@ class _Solver(object):
         self.config = config
         self.instance = instance
         logFields = [
-            {'id': 'elapTime', 'name': 'Elap. Time (s)', 'headerformat': '{:>14s}', 'valueformat': '{:>14.8f}'},
+            {'id': 'elapTime', 'name': 'Elap. Time (s)', 'headerformat': '{:>14s}', 'valueformat': '{:>14.20f}'},
             {'id': 'objValue', 'name': 'Obj. Value', 'headerformat': '{:>10s}', 'valueformat': '{:>10.8f}'},
             {'id': 'iterations', 'name': 'Iterations', 'headerformat': '{:>12s}', 'valueformat': '{:>12d}'}
         ]

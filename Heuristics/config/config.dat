@@ -2,7 +2,7 @@
 inputDataFile        = data/5_10_instance.dat;         # Input DAT file
 solutionFile         = solutions/greedy_5_10.sol;      # Output DAT file (solution)
 solver               = Greedy;                      # Supported solvers: Greedy / Random / GRASP / BRKGA
-maxExecTime          = 1800;                         # Maximum execution time in seconds
+maxExecTime          = 600;                         # Maximum execution time in seconds
 verbose              = True;                        # Verbose mode?
 
 # --- GRASP constructive specific parameters ------------------------------------------------------------------
